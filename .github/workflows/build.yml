@@ -1,0 +1,39 @@
+name: Build and Publish Project
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Fetch Submodules Recursively
+      run: git submodule update --init --recursive
+
+    - name: Generate project
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: .\generate.bat
+
+    - name: Build project-bo4
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=Release .
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: project-bo4
+        path: build/x64/Release/XInput9_1_0.dll
