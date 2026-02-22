@@ -23,7 +23,7 @@ jobs:
       run: .\generate.bat
 
     - name: Build project-bo4
-      run: msbuild build//shield-development.sln /m /p:Configuration=Release .
+      run: msbuild build/shield-development.sln /p:Configuration=Release
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
