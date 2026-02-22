@@ -29,7 +29,7 @@ jobs:
       run: .\generate.bat
 
     - name: Build project-bo4
-      working-directory: ${{env.GITHUB_WORKSPACE}}
+      working-directory: build
       run: msbuild /m /p:Configuration=Release .
 
     - name: Upload artifact
